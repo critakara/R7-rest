@@ -1,5 +1,9 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
+  skip_forgery_protection only: [:create]
+
+  cookies["CSRF-TOKEN"] = form_authenticity_token
+  response.set_header('X-CSRF-Token', form_authenticity_token)
 
   def destroy 
     @logged_in_user = current_user
